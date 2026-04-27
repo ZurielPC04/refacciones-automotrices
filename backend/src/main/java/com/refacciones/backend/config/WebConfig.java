@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 // Rutas que NO protege (públicas)
                 .excludePathPatterns(
-                        "/api/auth/login"   // Login es público
+                        "/api/auth/login" // Login es público
                 );
     }
 }

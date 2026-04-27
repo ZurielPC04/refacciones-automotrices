@@ -12,8 +12,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response,
-                             Object handler) throws Exception {
+            HttpServletResponse response,
+            Object handler) throws Exception {
 
         // Permitir solicitudes OPTIONS (preflight de CORS)
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
@@ -37,7 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         // Rutas que solo puede acceder ADMIN
         String uri = request.getRequestURI();
         boolean esRutaAdmin = uri.startsWith("/api/usuarios") ||
-                              uri.startsWith("/api/dashboard/resumen");
+                uri.startsWith("/api/dashboard/resumen");
 
         // Si la ruta es solo para ADMIN y el usuario es EMPLEADO → 403 Prohibido
         if (esRutaAdmin && "EMPLEADO".equals(rol)) {

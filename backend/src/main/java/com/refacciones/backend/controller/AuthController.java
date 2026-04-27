@@ -20,7 +20,7 @@ public class AuthController {
     // POST /api/auth/login → inicia sesión
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request,
-                                   HttpSession session) {
+            HttpSession session) {
         try {
             UsuarioResponse response = authService.login(request, session);
             return ResponseEntity.ok(response);
