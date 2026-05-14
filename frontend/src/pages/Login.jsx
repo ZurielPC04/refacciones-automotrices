@@ -81,14 +81,16 @@ function Login() {
               fullWidth
               required
               size="small"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setMostrarPassword(!mostrarPassword)} edge="end" size="small">
-                      {mostrarPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setMostrarPassword(!mostrarPassword)} edge="end" size="small">
+                        {mostrarPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
 
