@@ -21,12 +21,20 @@ public class ModeloService {
     @Autowired
     private MarcaRepository marcaRepository;
 
-    // Listar todos los modelos activos
+    // Listar todos los modelos (activos e inactivos)
     public List<ModeloResponse> listarTodos() {
-        return modeloRepository.findByActivoTrue()
+        return modeloRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // Reactivar modelo (activo = true)
+    public void activar(Integer id) {
+        Modelo modelo = modeloRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Modelo no encontrado con id: " + id));
+        modelo.setActivo(true);
+        modeloRepository.save(modelo);
     }
 
     // Listar modelos de una marca específica

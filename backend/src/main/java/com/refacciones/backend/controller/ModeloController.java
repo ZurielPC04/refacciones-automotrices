@@ -76,4 +76,16 @@ public class ModeloController {
                     .body("{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    // PUT /api/modelos/{id}/activar → reactivar modelo
+    @PutMapping("/{id}/activar")
+    public ResponseEntity<?> activar(@PathVariable Integer id) {
+        try {
+            modeloService.activar(id);
+            return ResponseEntity.ok("{\"mensaje\": \"Modelo activado correctamente\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
 }

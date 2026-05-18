@@ -70,4 +70,16 @@ public class ProveedorController {
                     .body("{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    // PUT /api/proveedores/{id}/activar → reactivar proveedor
+    @PutMapping("/{id}/activar")
+    public ResponseEntity<?> activar(@PathVariable Integer id) {
+        try {
+            proveedorService.activar(id);
+            return ResponseEntity.ok("{\"mensaje\": \"Proveedor activado correctamente\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
 }

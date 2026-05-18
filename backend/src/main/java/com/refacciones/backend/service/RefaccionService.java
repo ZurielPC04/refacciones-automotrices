@@ -21,12 +21,20 @@ public class RefaccionService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    // Listar todo el inventario activo
+    // Listar todo el inventario (activas e inactivas)
     public List<RefaccionResponse> listarTodas() {
-        return refaccionRepository.findByActivoTrue()
+        return refaccionRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // Reactivar refacción (activo = true)
+    public void activar(Integer id) {
+        Refaccion refaccion = refaccionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Refacción no encontrada con id: " + id));
+        refaccion.setActivo(true);
+        refaccionRepository.save(refaccion);
     }
 
     // Obtener una refacción por id

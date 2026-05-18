@@ -70,4 +70,16 @@ public class CategoriaController {
                     .body("{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    // PUT /api/categorias/{id}/activar → reactivar categoría
+    @PutMapping("/{id}/activar")
+    public ResponseEntity<?> activar(@PathVariable Integer id) {
+        try {
+            categoriaService.activar(id);
+            return ResponseEntity.ok("{\"mensaje\": \"Categoría activada correctamente\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
 }

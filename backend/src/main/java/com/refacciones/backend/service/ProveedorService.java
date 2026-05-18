@@ -16,12 +16,20 @@ public class ProveedorService {
     @Autowired
     private ProveedorRepository proveedorRepository;
 
-    // Listar todos los proveedores activos
+    // Listar todos los proveedores (activos e inactivos)
     public List<ProveedorResponse> listarTodos() {
-        return proveedorRepository.findByActivoTrue()
+        return proveedorRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // Reactivar proveedor (activo = true)
+    public void activar(Integer id) {
+        Proveedor proveedor = proveedorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado con id: " + id));
+        proveedor.setActivo(true);
+        proveedorRepository.save(proveedor);
     }
 
     // Obtener un proveedor por id

@@ -83,12 +83,24 @@ public class RefaccionController {
         }
     }
 
-    // DELETE /api/refacciones/{id} → eliminar refacción
+    // DELETE /api/refacciones/{id} → desactivar refacción (baja lógica)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
         try {
             refaccionService.eliminar(id);
-            return ResponseEntity.ok("{\"mensaje\": \"Refacción eliminada correctamente\"}");
+            return ResponseEntity.ok("{\"mensaje\": \"Refacción desactivada correctamente\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
+
+    // PUT /api/refacciones/{id}/activar → reactivar refacción
+    @PutMapping("/{id}/activar")
+    public ResponseEntity<?> activar(@PathVariable Integer id) {
+        try {
+            refaccionService.activar(id);
+            return ResponseEntity.ok("{\"mensaje\": \"Refacción activada correctamente\"}");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("{\"error\": \"" + e.getMessage() + "\"}");

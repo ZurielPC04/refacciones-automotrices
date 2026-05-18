@@ -3,11 +3,11 @@ import {
   Box, Card, Typography, Button, Chip,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, MenuItem, Grid, Alert, CircularProgress,
+  TextField, MenuItem, Grid, Alert, CircularProgress, Snackbar, Tooltip,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import api from '../api/axiosConfig';
 import Navbar from '../components/Navbar';
 
@@ -22,6 +22,11 @@ function Movimientos() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [tipoMovimiento, setTipoMovimiento] = useState('ENTRADA');
   const [guardando, setGuardando] = useState(false);
+  const [snack, setSnack] = useState({ open: false, mensaje: '', severity: 'success' });
+
+  const mostrarSnack = (mensaje, severity = 'success') =>
+    setSnack({ open: true, mensaje, severity });
+  const cerrarSnack = () => setSnack(s => ({ ...s, open: false }));
 
   const [form, setForm] = useState({
     idRefaccion: '', cantidad: '', precioUnitario: '',
@@ -66,8 +71,14 @@ function Movimientos() {
       });
       setDialogOpen(false);
       cargarDatos();
+      mostrarSnack(
+        tipoMovimiento === 'ENTRADA'
+          ? '✅ Entrada registrada correctamente'
+          : '✅ Salida registrada correctamente',
+        'success'
+      );
     } catch (err) {
-      alert(err.response?.data?.error || 'Error al registrar movimiento');
+      mostrarSnack(err.response?.data?.error || 'Error al registrar el movimiento', 'error');
     } finally {
       setGuardando(false);
     }
@@ -118,7 +129,7 @@ function Movimientos() {
             <Table>
               <TableHead>
                 <TableRow sx={{ backgroundColor: 'primary.main' }}>
-                  {['Fecha', 'Pieza', 'Tipo', 'Motivo', 'Cantidad', 'Precio Unit.', 'Proveedor', 'Usuario']
+                  {['Fecha', 'Pieza', 'Tipo', 'Motivo', 'Cantidad', 'Precio Unit.', 'Proveedor', 'Usuario', 'Notas']
                     .map(h => (
                       <TableCell key={h} sx={{ color: 'white', fontWeight: 'bold' }}>{h}</TableCell>
                     ))}
@@ -145,12 +156,38 @@ function Movimientos() {
                     <TableCell>${Number(m.precioUnitario).toFixed(2)}</TableCell>
                     <TableCell>{m.nombreProveedor || '—'}</TableCell>
                     <TableCell>{m.nombreUsuario}</TableCell>
+                    <TableCell align="center">
+                      {m.notas ? (
+                        <Tooltip title={m.notas} arrow placement="left">
+                          <StickyNote2Icon fontSize="small" sx={{ color: '#e9c46a', cursor: 'pointer' }} />
+                        </Tooltip>
+                      ) : (
+                        <Typography variant="body2" color="text.disabled">—</Typography>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         </Card>
+
+        {/* Snackbar de notificaciones */}
+        <Snackbar
+          open={snack.open}
+          autoHideDuration={4000}
+          onClose={cerrarSnack}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={cerrarSnack}
+            severity={snack.severity}
+            variant="filled"
+            sx={{ width: '100%', fontSize: '0.95rem' }}
+          >
+            {snack.mensaje}
+          </Alert>
+        </Snackbar>
 
         {/* Dialog */}
         <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="sm" fullWidth>

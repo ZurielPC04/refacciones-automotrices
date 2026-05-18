@@ -16,12 +16,20 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    // Listar todas las categorías activas
+    // Listar todas las categorías (activas e inactivas)
     public List<CategoriaResponse> listarTodas() {
-        return categoriaRepository.findByActivoTrue()
+        return categoriaRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // Reactivar categoría (activo = true)
+    public void activar(Integer id) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id: " + id));
+        categoria.setActivo(true);
+        categoriaRepository.save(categoria);
     }
 
     // Obtener una categoría por id

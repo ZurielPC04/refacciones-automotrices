@@ -70,4 +70,16 @@ public class UsuarioController {
                     .body("{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    // PUT /api/usuarios/{id}/activar → reactivar usuario
+    @PutMapping("/{id}/activar")
+    public ResponseEntity<?> activar(@PathVariable Integer id) {
+        try {
+            usuarioService.activar(id);
+            return ResponseEntity.ok("{\"mensaje\": \"Usuario activado correctamente\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
 }

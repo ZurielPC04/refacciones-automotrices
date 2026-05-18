@@ -7,6 +7,9 @@ import Dashboard from './pages/Dashboard';
 import Inventario from './pages/Inventario';
 import Movimientos from './pages/Movimientos';
 import Usuarios from './pages/Usuarios';
+import Categorias from './pages/Categorias';
+import Modelos from './pages/Modelos';
+import Proveedores from './pages/Proveedores';
 
 const theme = createTheme({
   palette: {
@@ -33,7 +36,10 @@ function App() {
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="/inventario" element={<PrivateRoute><Inventario /></PrivateRoute>} />
             <Route path="/movimientos" element={<PrivateRoute><Movimientos /></PrivateRoute>} />
-            <Route path="/usuarios" element={<PrivateRoute soloAdmin={true}><Usuarios /></PrivateRoute>} />
+            <Route path="/usuarios"    element={<PrivateRoute soloAdmin={true}><Usuarios /></PrivateRoute>} />
+            <Route path="/categorias"  element={<PrivateRoute soloAdmin={true}><Categorias /></PrivateRoute>} />
+            <Route path="/modelos"     element={<PrivateRoute soloAdmin={true}><Modelos /></PrivateRoute>} />
+            <Route path="/proveedores" element={<PrivateRoute soloAdmin={true}><Proveedores /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </BrowserRouter>

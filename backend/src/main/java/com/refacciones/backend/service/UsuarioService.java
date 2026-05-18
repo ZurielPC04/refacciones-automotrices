@@ -16,12 +16,20 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Listar todos los usuarios activos
+    // Listar todos los usuarios (activos e inactivos)
     public List<UsuarioResponse> listarTodos() {
-        return usuarioRepository.findByActivoTrue()
+        return usuarioRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // Reactivar usuario (activo = true)
+    public void activar(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+        usuario.setActivo(true);
+        usuarioRepository.save(usuario);
     }
 
     // Obtener usuario por id
